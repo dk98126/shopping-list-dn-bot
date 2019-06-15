@@ -27,7 +27,7 @@
                     <programs>
                         <program>
                             <mainClass>com.home.server.TelegramBot</mainClass>
-                            <name>ShoppingListBot</name>
+                            <name>shoppingListBot</name>
                         </program>
                     </programs>
                 </configuration>
