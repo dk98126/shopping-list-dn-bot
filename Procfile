@@ -1,1 +1,1 @@
-worker: sh target/bin/shoppingList
+worker: sh target/bin/shoppingListBot
