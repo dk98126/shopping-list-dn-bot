@@ -26,8 +26,8 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>com.home.server.TelegramBot</mainClass>
-                            <name>shoppingListBot</name>
+                            <mainClass>Main</mainClass>
+                            <name>ShoppingListBot</name>
                         </program>
                     </programs>
                 </configuration>
