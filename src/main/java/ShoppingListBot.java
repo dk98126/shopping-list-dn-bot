@@ -24,7 +24,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
             if (message_text.equals("/udword")) {
-                SendMessage message = new SendMessage().setChatId(chat_id).setText(lastWordFromUrbanDictionaryDescription());
+                SendMessage message = new SendMessage().setChatId(chat_id).setText(lastWordFromUrbanDictionaryDescription()).enableHtml(true);
                 try {
                     execute(message);
                 } catch (TelegramApiException e) {
@@ -70,7 +70,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
                 Iterator<Element> meaningsIterator = meanings.iterator();
                 if (meaningsIterator.hasNext()) {
                     Element meaning = meaningsIterator.next();
-                    String meaningString = meaning.html().replaceAll("<br>\n", "\n");
+                    String meaningString = meaning.html().replaceAll("<br>", "\n");
                     meaningString = meaningString.replaceAll("\n\n", "\n");
                     builder.append(meaningString);
                 }
