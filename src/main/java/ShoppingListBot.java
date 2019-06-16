@@ -15,45 +15,32 @@ public class ShoppingListBot extends TelegramLongPollingBot {
 
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                    .setChatId(update.getMessage().getChatId())
-                    .setText("Поторяю за тобой:\n" + update.getMessage().getText());
-            try {
-                execute(message); // Call method to send the message
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
+            String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
-
-            List<PhotoSize> photoSizes = update.getMessage().getPhoto();
-
-            String f_id = photoSizes.stream()
-                            .sorted(Comparator.comparing(PhotoSize::getFileSize)
-                            .reversed())
-                            .findFirst()
-                            .orElse(null)
-                            .getFileId();
-
-            int f_width = photoSizes.stream()
-                    .sorted(Comparator.comparing(PhotoSize::getFileSize).reversed())
-                    .findFirst()
-                    .orElse(null).getWidth();
-
-            int f_height = photoSizes.stream()
-                    .sorted(Comparator.comparing(PhotoSize::getFileSize).reversed())
-                    .findFirst()
-                    .orElse(null).getHeight();
-
-            String caption = "file_id: " + f_id + "\nwidth: " + f_width + "\nheight: " + f_height;
-            SendPhoto msg = new SendPhoto().setChatId(chat_id)
-                                .setChatId(chat_id)
-                                .setPhoto(f_id)
-                                .setCaption(caption);
-            try {
-                execute(msg);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            if (message_text.equals("/start")) {
+                SendMessage message = new SendMessage().setChatId(chat_id).setText(message_text);
+                try {
+                    execute(message); // Call method to send the message
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            } else if (message_text.equals("/pic")) {
+                SendPhoto message = new SendPhoto().setChatId(chat_id)
+                        .setPhoto("AgADAgAD36oxG52vMUheQSgTB0JSf5RrUw8ABOLV4pVOGRXy64gEAAEC")
+                        .setCaption("Photo");
+                try {
+                    execute(message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                SendMessage message = new SendMessage()
+                        .setChatId(chat_id).setText("Unknown command");
+                try {
+                    execute(message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
