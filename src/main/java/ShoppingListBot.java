@@ -12,7 +12,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
-                    .setText(update.getMessage().getText()+"\nid чата:\n" + update.getMessage().getChatId());
+                    .setText("Я знаю, где ты находишься:\n" + update.getMessage().getLocation().toString());
             try {
                 execute(message); // Call method to send the message
             } catch (TelegramApiException e) {
