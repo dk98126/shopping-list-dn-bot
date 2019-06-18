@@ -57,21 +57,21 @@ public class ShoppingListBot extends TelegramLongPollingBot {
                 Iterator<Element> wordsIterator = words.iterator();
                 if (wordsIterator.hasNext()) {
                     Element word = wordsIterator.next();
-                    builder.append("Term:\n").append("<b>").append(word.text()).append("</b>\n\n");
+                    builder.append("<b>Term:<b>\n").append(word.text()).append("\n\n");
                 }
                 Elements meanings = defPanel.getElementsByClass("meaning");
                 Iterator<Element> meaningsIterator = meanings.iterator();
                 if (meaningsIterator.hasNext()) {
                     Element meaning = meaningsIterator.next();
                     String meaningString = getHrefsAndText(meaning);
-                    builder.append("Meaning:\n").append(meaningString).append("\n\n");
+                    builder.append("<b>Meaning:</b>\n").append(meaningString).append("\n\n");
                 }
                 Elements examples = defPanel.getElementsByClass("example");
                 Iterator<Element> examplesIterator = examples.iterator();
                 if (examplesIterator.hasNext()) {
                     Element example = examplesIterator.next();
                     String exampleString = getHrefsAndText(example);
-                    builder.append("Examples:\n").append(exampleString);
+                    builder.append("<b>Examples:</b>\n").append("<i>").append(exampleString).append("</i>");
                 }
             }
         }
@@ -86,7 +86,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
             Matcher matcher = hrefPatter.matcher(string);
             if (matcher.find()) {
                 String href = matcher.group(0).replace("href", "").replaceAll("\"", "");
-                String url = "\"https://www.urbandictionary.com" + href + "\"";
+                String url = "href=\"https://www.urbandictionary.com" + href + "\"";
                 string = string.replaceAll("<a.*>", "<a " + url + ">");
                 builder.append(string).append("</a>");
             } else builder.append(string);
