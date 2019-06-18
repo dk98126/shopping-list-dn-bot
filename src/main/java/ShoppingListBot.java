@@ -86,7 +86,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
         for (String string : stringArray) {
             Matcher matcher = hrefPatter.matcher(string);
             if (matcher.find()) {
-                String href = matcher.group(0).replace("href", "").replaceAll("\"", "");
+                String href = matcher.group(0).replace("href=", "").replaceAll("\"", "");
                 String url = "href=\"https://www.urbandictionary.com" + href + "\"";
                 string = string.replaceAll("<a.*>", "<a " + url + ">");
                 builder.append(string).append("</a>");
