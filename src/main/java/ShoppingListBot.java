@@ -75,6 +75,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
                 }
             }
         }
+        System.out.println(builder.toString());
         return builder.toString();
     }
 
