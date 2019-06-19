@@ -23,16 +23,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
             if (message_text.equals("/udword")) {
-                SendMessage message = new SendMessage().setChatId(chat_id).setText("<b>Term:<b>\n" +
-                        "alternative\n" +
-                        "\n" +
-                        "<b>Meaning:</b>\n" +
-                        "A <a href=\"https://www.urbandictionary.com/define.php?term=label\">label</a> for the label-less\n" +
-                        "\n" +
-                        "<b>Examples:</b>\n" +
-                        "<i>*Some dude*: <a href=\"https://www.urbandictionary.com/define.php?term=Why%20don%27t%20you\">Why don't you</a> dress like all your \"punk\" friends? \n" +
-                        " \n" +
-                        "*<a href=\"https://www.urbandictionary.com/define.php?term=Alternative\">Alternative</a>*: Because <a href=\"https://www.urbandictionary.com/define.php?term=I%20don%27t%20want%20to\">I don't want to</a>...</i>\n").enableHtml(true);
+                SendMessage message = new SendMessage().setChatId(chat_id).setText(getRandomWordFromUrbanDictionary()).enableHtml(true);
                 try {
                     execute(message);
                 } catch (TelegramApiException e) {
@@ -56,7 +47,6 @@ public class ShoppingListBot extends TelegramLongPollingBot {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(url);
         if (doc != null) {
             Elements defPanels = doc.getElementsByClass("def-panel");
             Iterator<Element> defPanelsIterator = defPanels.iterator();
@@ -66,41 +56,31 @@ public class ShoppingListBot extends TelegramLongPollingBot {
                 Iterator<Element> wordsIterator = words.iterator();
                 if (wordsIterator.hasNext()) {
                     Element word = wordsIterator.next();
-                    builder.append("<b>Term:<b>\n").append(word.text()).append("\n\n");
+                    Pattern hrefPatter = Pattern.compile("href=\"[^\"]*\"");
+                    Matcher matcher = hrefPatter.matcher(word.outerHtml().replaceAll("<br>", "\n"));
+                    String link = null;
+                    if (matcher.find()){
+                        link="href=\"" +"https://www.urbandictionary.com" + matcher.group(0).replace("href=\"", "");
+                        link="<a " +  link + ">" + word.text() + "</a>";
+                    }
+                    builder.append("<b>Term:<b>\n").append(link).append("\n\n");
                 }
                 Elements meanings = defPanel.getElementsByClass("meaning");
                 Iterator<Element> meaningsIterator = meanings.iterator();
                 if (meaningsIterator.hasNext()) {
                     Element meaning = meaningsIterator.next();
-                    String meaningString = getHrefsAndText(meaning);
+                    String meaningString = meaning.text();
                     builder.append("<b>Meaning:</b>\n").append(meaningString).append("\n\n");
                 }
                 Elements examples = defPanel.getElementsByClass("example");
                 Iterator<Element> examplesIterator = examples.iterator();
                 if (examplesIterator.hasNext()) {
                     Element example = examplesIterator.next();
-                    String exampleString = getHrefsAndText(example);
+                    String exampleString = example.text();
                     builder.append("<b>Examples:</b>\n").append("<i>").append(exampleString).append("</i>");
                 }
             }
         }
-        System.out.println(builder.toString());
         return builder.toString();
-    }
-
-    public static String getHrefsAndText(Element source) {
-        Pattern hrefPatter = Pattern.compile("href=\"[^\"]*\"");
-        String[] stringArray = source.html().split("</a>");
-        StringBuilder builder = new StringBuilder();
-        for (String string : stringArray) {
-            Matcher matcher = hrefPatter.matcher(string);
-            if (matcher.find()) {
-                String href = matcher.group(0).replace("href=", "").replaceAll("\"", "");
-                String url = "href=\"https://www.urbandictionary.com" + href + "\"";
-                string = string.replaceAll("<a.*>", "<a " + url + ">");
-                builder.append(string).append("</a>");
-            } else builder.append(string);
-        }
-        return builder.toString().replaceAll("\n", "").replaceAll("<br>", "\n");
     }
 }
