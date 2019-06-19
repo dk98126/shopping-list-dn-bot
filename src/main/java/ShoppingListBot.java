@@ -63,7 +63,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
                         link="href=\"" +"https://www.urbandictionary.com" + matcher.group(0).replace("href=\"", "");
                         link="<a " +  link + ">" + word.text() + "</a>";
                     }
-                    builder.append("<b>Term:<b>\n").append(word.text()).append("\n\n");
+                    builder.append("<b>Term:</b>\n").append(link).append("\n\n");
                 }
                 Elements meanings = defPanel.getElementsByClass("meaning");
                 Iterator<Element> meaningsIterator = meanings.iterator();
