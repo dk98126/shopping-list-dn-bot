@@ -23,7 +23,16 @@ public class ShoppingListBot extends TelegramLongPollingBot {
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
             if (message_text.equals("/udword")) {
-                SendMessage message = new SendMessage().setChatId(chat_id).setText("<a href=\"https://www.urbandictionary.com/define.php?term=jamaican\">jamaican</a>").enableHtml(true);
+                SendMessage message = new SendMessage().setChatId(chat_id).setText("<b>Term:<b>\n" +
+                        "alternative\n" +
+                        "\n" +
+                        "<b>Meaning:</b>\n" +
+                        "A <a href=\"https://www.urbandictionary.com/define.php?term=label\">label</a> for the label-less\n" +
+                        "\n" +
+                        "<b>Examples:</b>\n" +
+                        "<i>*Some dude*: <a href=\"https://www.urbandictionary.com/define.php?term=Why%20don%27t%20you\">Why don't you</a> dress like all your \"punk\" friends? \n" +
+                        " \n" +
+                        "*<a href=\"https://www.urbandictionary.com/define.php?term=Alternative\">Alternative</a>*: Because <a href=\"https://www.urbandictionary.com/define.php?term=I%20don%27t%20want%20to\">I don't want to</a>...</i>\n").enableHtml(true);
                 try {
                     execute(message);
                 } catch (TelegramApiException e) {
