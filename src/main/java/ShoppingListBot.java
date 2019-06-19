@@ -69,14 +69,14 @@ public class ShoppingListBot extends TelegramLongPollingBot {
                 Iterator<Element> meaningsIterator = meanings.iterator();
                 if (meaningsIterator.hasNext()) {
                     Element meaning = meaningsIterator.next();
-                    String meaningString = getHrefsAndText(meaning);
+                    String meaningString = meaning.text(); //getHrefsAndText(meaning);
                     builder.append("<b>Meaning:</b>\n").append(meaningString).append("\n\n");
                 }
                 Elements examples = defPanel.getElementsByClass("example");
                 Iterator<Element> examplesIterator = examples.iterator();
                 if (examplesIterator.hasNext()) {
                     Element example = examplesIterator.next();
-                    String exampleString = getHrefsAndText(example);
+                    String exampleString = example.text(); //getHrefsAndText(example);
                     builder.append("<b>Examples:</b>\n").append("<i>").append(exampleString).append("</i>");
                 }
             }
