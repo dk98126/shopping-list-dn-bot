@@ -69,18 +69,34 @@ public class ShoppingListBot extends TelegramLongPollingBot {
                 Iterator<Element> meaningsIterator = meanings.iterator();
                 if (meaningsIterator.hasNext()) {
                     Element meaning = meaningsIterator.next();
-                    String meaningString = meaning.text();
+                    String meaningString = getHrefsAndText(meaning);
                     builder.append("<b>Meaning:</b>\n").append(meaningString).append("\n\n");
                 }
                 Elements examples = defPanel.getElementsByClass("example");
                 Iterator<Element> examplesIterator = examples.iterator();
                 if (examplesIterator.hasNext()) {
                     Element example = examplesIterator.next();
-                    String exampleString = example.text();
+                    String exampleString = getHrefsAndText(example);
                     builder.append("<b>Examples:</b>\n").append("<i>").append(exampleString).append("</i>");
                 }
             }
         }
         return builder.toString();
+    }
+
+    public static String getHrefsAndText(Element source) {
+        Pattern hrefPatter = Pattern.compile("href=\"[^\"]*\"");
+        String[] stringArray = source.html().split("</a>");
+        StringBuilder builder = new StringBuilder();
+        for (String string : stringArray) {
+            Matcher matcher = hrefPatter.matcher(string);
+            if (matcher.find()) {
+                String href = matcher.group(0).replace("href=", "").replaceAll("\"", "");
+                String url = "href=\"https://www.urbandictionary.com" + href + "\"";
+                string = string.replaceAll("<a.*>", "<a " + url + ">");
+                builder.append(string).append("</a>");
+            } else builder.append(string);
+        }
+        return builder.toString().replaceAll("\n", "").replaceAll("<br>", "\n");
     }
 }
