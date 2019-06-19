@@ -23,7 +23,7 @@ public class ShoppingListBot extends TelegramLongPollingBot {
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
             if (message_text.equals("/udword")) {
-                SendMessage message = new SendMessage().setChatId(chat_id).setText(getRandomWordFromUrbanDictionary()).enableHtml(true);
+                SendMessage message = new SendMessage().setChatId(chat_id).setText("<a href=\"https://www.urbandictionary.com/define.php?term=jamaican\">jamaican</a>").enableHtml(true);
                 try {
                     execute(message);
                 } catch (TelegramApiException e) {
